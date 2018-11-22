@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Zadanie 5</title>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <header>
+        <h1>PARAGON 30-03-15/004</h1>
+    </header>
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th class="id">LP</th>
+                    <th class="name">NAZWA</th>
+                    <th class="quantity">ILOŚĆ</th>
+                    <th class="price">CENA</th>
+                    <th class="total">SUMA</th>
+                    <th>Operacje</th>
+                </tr>
+            </thead>
+            <tbody id="itemContainer">
+                <tr id="itemPattern" hidden>
+                    <td class="id">0</td>
+                    <td class="name"></td>
+                    <td class="quantity"></td>
+                    <td class="price"></td>
+                    <td class="total"></td>
+                    <td>
+                        <button>Edytuj</button>
+                        <button>Usuń</button>
+                    </td>
+                    <td class="move-up no-padding">
+                        <button>⇧</button>
+                    </td>
+                    <td class="move-down no-padding">
+                        <button>⇩</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr id="total">
+                    <td colspan="5">RAZEM</td>
+                    <td colspan="3" id="totalValue">9,80 zł</td>
+                </tr>
+            </tfoot>
+        </table>
+    </main>
+
+    <form id="addForm">
+        <table>
+            <thead>
+                <tr>
+                    <td colspan="2">
+                        <h2>Nowa pozycja</h2>
+                    </td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tr>
+                <td>Nazwa:</td>
+                <td>
+                    <input id="name">
+                </td>
+                <td class="error" id="name_error"></td>
+            </tr>
+            <tr>
+                <td>Ilość:</td>
+                <td>
+                    <input id="quantity">
+                </td>
+                <td class="error" id="quantity_error"></td>
+            </tr>
+            <tr>
+                <td>Cena:</td>
+                <td>
+                    <input id="price">
+                </td>
+                <td class="error" id="price_error"></td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <input type="submit" value="Dodaj">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</body>
+
+</html>
