@@ -9,8 +9,8 @@ window.onload = function () {
     let storage = getDataFromLocalStorage();
     idx = storage == null ? 0 : storage.length;
 
-    $('#itemContainer').on('click', 'button.deleteItem', function() {
-        var row = $(this).parents('tr')
+    $('#itemContainer').on('click', 'button.deleteItem', function () {
+        var row = $(this).parents('tr');
         console.log(row);
         var row_id = row.children().first()[0].textContent;
 
@@ -18,11 +18,51 @@ window.onload = function () {
         removeItemFromLocalStorage(row_id);
         row.remove();
 
-
-        $('#itemContainer > tr').find('td:first').text(function(i, text){
+        $('#itemContainer > tr').find('td:first').text(function (i) {
             return i + 1;
         })
-    
+    });
+
+    $('#itemContainer').on('click', 'button.editItem', function () {
+        var row = $(this).parents('tr');
+        console.log(row.children().first()[0].textContent);
+    });
+
+    $('body').on('click', '[data-editable]', function () {
+        var $el = $(this);
+
+        var field_name = $el.parents('td').attr('class');
+        
+        var row = $el.parents('tr');
+        var row_id = row.children().first()[0].textContent;
+
+
+        var $input = $('<input/>').val($el.text());
+        $el.replaceWith($input);
+
+
+        var save = function () {
+            var existingTableData = getDataFromLocalStorage();
+            if (existingTableData == null)
+                return;
+
+
+            var $p = $('<p data-editable />').text($input.val());
+            existingTableData[row_id-1][field_name] = $input.val();
+
+            $input.replaceWith($p);
+            localStorage.setItem(tableDataStorage, JSON.stringify(existingTableData));
+        };
+
+        /**
+          We're defining the callback with `one`, because we know that
+          the element will be gone just after that, and we don't want 
+          any callbacks leftovers take memory. 
+          Next time `p` turns into `input` this single callback 
+          will be applied again.
+        */
+        $input.one('blur', save).focus();
+
     });
 
     $("#addForm").submit(function () {
@@ -67,7 +107,7 @@ window.onload = function () {
         ++idx;
         addItemToTable(idx, name, quantity, price);
         addItemToLocalStorage(idx, name, quantity, price)
- 
+
         $("#name").val("");
         $("#price").val("");
         $("#quantity").val("");
@@ -77,10 +117,19 @@ window.onload = function () {
     })
 }
 
+function setMoveButtons()
+{
+    //$("#itemContainer tr .move-up button").css("visibility", "visible");
+    $("#itemContainer tr .move-down button").css("visibility", "visible");
+
+    $("#itemContainer tr:first .move-up button").css("visibility", "hidden");
+    $("#itemContainer tr:last .move-down button").css("visibility", "hidden");
+}
+
 function addItemToLocalStorage(id, name, quantity, price) {
     var existingTableData = getDataFromLocalStorage();
 
-    if(existingTableData == null)
+    if (existingTableData == null)
         existingTableData = [];
 
     existingTableData.push({ id: id, name: name, quantity: quantity, price: price });
@@ -89,7 +138,7 @@ function addItemToLocalStorage(id, name, quantity, price) {
 
 function removeItemFromLocalStorage(id) {
     var existingTableData = getDataFromLocalStorage();
-    if(existingTableData == null)
+    if (existingTableData == null)
         return;
 
     idx = 0;
@@ -104,43 +153,46 @@ function addItemToTable(id, name, quantity, price) {
     var newElement = $("#itemPattern").clone();
 
     newElement.find(".id").text(id);
-    newElement.find(".name").text(name);
-    newElement.find(".quantity").text(quantity);
-    newElement.find(".price").text(price);
+    newElement.find(".name > p").text(name);
+    newElement.find(".quantity > p").text(quantity);
+    newElement.find(".price > p").text(price);
 
     var total = parseFloat(quantity) * parseFloat(price);
     newElement.find(".total").text(total);
+    newElement.removeAttr("id");
 
     $("#itemContainer").append(newElement);
     newElement.show();
+
+    setMoveButtons();
 }
 
-function loadLocalStorageToTable()
-{
+function loadLocalStorageToTable() {
     var existingTableData = getDataFromLocalStorage();
-    if(existingTableData == null)
+    if (existingTableData == null)
         return;
 
     existingTableData.forEach(item => addItemToTable(item.id, item.name, item.quantity, item.price));
+
+    setMoveButtons();
 }
 
 
-function getDataFromLocalStorage()
-{
+function getDataFromLocalStorage() {
     var existingTableStorage = localStorage.getItem(tableDataStorage);
 
-    if(existingTableStorage == null || (typeof(existingTableStorage) == "undefined") || existingTableStorage == "undefined")
+    if (existingTableStorage == null || (typeof (existingTableStorage) == "undefined") || existingTableStorage == "undefined")
         return null;
 
     var existingTableData = JSON.parse(existingTableStorage);
-    if(existingTableData == null)
+    if (existingTableData == null)
         return null;
 
     return existingTableData;
 }
 
 function checkPriceInput(input) {
-    if (!isNaN(input)) {//number
+    if (!isNaN(input)) { //number
         if (input > 0) {
             return true;
         }
@@ -149,7 +201,7 @@ function checkPriceInput(input) {
 }
 
 function checkQuantityInput(input) {
-    if (!isNaN(input)) {//number
+    if (!isNaN(input)) { //number
         if (input > 0 && Number.isInteger(input)) {
             return true
         }
@@ -161,8 +213,7 @@ function getConfirmation() {
     var retVal = confirm("Do you want to continue ?");
     if (retVal == true) {
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }

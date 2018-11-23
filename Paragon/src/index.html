@@ -17,27 +17,26 @@
         <table>
             <thead>
                 <tr>
-                    <th class="id">LP</th>
-                    <th class="name">NAZWA</th>
+                    <th class="id">L.p.</th>
+                    <th class="name">Nazwa</th>
                     <th class="quantity">ILOŚĆ</th>
                     <th class="price">CENA</th>
                     <th class="total">SUMA</th>
-                    <th>Operacje</th>
+                    <th colspan="3">Operacje</th>
                 </tr>  
                 <tr id="itemPattern" hidden>
                     <td class="id">0</td>
-                    <td class="name"></td>
-                    <td class="quantity"></td>
-                    <td class="price"></td>
+                    <td class="name"><p data-editable></p></td>
+                    <td class="quantity"><p data-editable></p></td>
+                    <td class="price"><p data-editable></p></td>
                     <td class="total"></td>
-                    <td>
-                        <button class="editItem" value="Edit">Edytuj</button>
-                        <button class="deleteItem" value="Delete">Usuń</button>
+                    <td class="operation no-padding">
+                        <button class="deleteItem">✘</button>
                     </td>
-                    <td class="move-up no-padding">
+                    <td class="operation move-up no-padding">
                         <button>⇧</button>
                     </td>
-                    <td class="move-down no-padding">
+                    <td class="operation move-down no-padding">
                         <button>⇩</button>
                     </td>
                 </tr>
@@ -47,8 +46,9 @@
             </tbody>
             <tfoot>
                 <tr id="total">
-                    <td colspan="5">RAZEM</td>
-                    <td colspan="3" id="totalValue">9,80 zł</td>
+                    <td colspan="4">RAZEM</td>
+                    <td id="totalValue">9,80 zł</td>
+                    <td colspan="3"></td>
                 </tr>
             </tfoot>
         </table>

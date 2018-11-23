@@ -1,82 +1,123 @@
 body {
-  color: #001028;
-  background: #FFFFFF; 
-  font-family: Arial, sans-serif; 
-  font-size: 12px; 
-  font-family: Arial;
-  max-width: 600px;
-  margin-left:auto;
-  margin-right:auto;
+    color: #001028;
+    background: #FFFFFF;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-family: Arial;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 header {
-  padding: 10px 0;
-  margin-bottom: 30px;
+    padding: 10px 0;
+    margin-bottom: 30px;
 }
 
 form table {
-  margin-left:auto;
-  margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
 h1 {
-  border-top: 1px solid  #5D6975;
-  border-bottom: 1px solid  #5D6975;
-  color: #5D6975;
-  font-size: 2.4em;
-  line-height: 1.4em;
-  font-weight: normal;
-  text-align: center;
-  margin-top: 0;
+    border-top: 1px solid #5D6975;
+    border-bottom: 1px solid #5D6975;
+    color: #5D6975;
+    font-size: 2.4em;
+    line-height: 1.4em;
+    font-weight: normal;
+    text-align: center;
+    margin-top: 0;
 }
 
 
 main table {
-  width: 100%;
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin-bottom: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 20px;
 }
 
 main table tr:nth-child(2n-1) td {
-  background: #F5F5F5;
+    background: #F5F5F5;
 }
 
 main table th {
-  padding: 5px 20px;
-  color: #5D6975;
-  border-bottom: 1px solid #C1CED9;
-  white-space: nowrap;        
-  font-weight: normal;
+    padding: 5px 20px;
+    color: #5D6975;
+    border-bottom: 1px solid #C1CED9;
+    white-space: nowrap;
+    font-weight: normal;
+    text-align: center;
+    font-size: 1.2em;
+    text-transform: uppercase;
 }
 
 main table .id {
-  text-align: center;
+    text-align: center;
+    width: 10%;
 }
 
 main table .name {
-  text-align: left;
+    text-align: left;
+    width: calc(60% - 120px - 28px);
 }
 
-main table td, main table th {
-  padding: 10px;
-  text-align: right;
-  font-size: 1.2em;
+main table .quantity {
+    text-align: right;
+    width: 10%;
+}
+
+main table .price {
+    text-align: right;
+    width: 10%;
+}
+
+main table .total {
+    text-align: right;
+    width: 10%;
+    padding-right: 28px;
+}
+
+main table .operation {
+    text-align: center;
+    width: 40px;
+}
+
+main table td {
+    padding: 8px 10px;
+    text-align: right;
+    font-size: 1.2em;
+}
+
+td p {
+    padding: 0;
+    margin: 0;
+}
+
+td input {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
 main table .no-padding {
-  padding: 0;
+    padding: 0;
 }
 
 main table tbody tr {
-  border-top: 1px solid #b9b9b9;
+    border-top: 1px solid #b9b9b9;
 }
 
 main table tfoot tr {
-  border-top: 1px solid #5D6975;
+    border-top: 1px solid #5D6975;
 }
 
 .error {
-  color: red;
+    color: red;
 }
