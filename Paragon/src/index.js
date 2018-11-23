@@ -12,21 +12,16 @@ window.onload = function () {
 
     $('#itemContainer').on('click', 'button.deleteItem', function () {
         var row = $(this).parents('tr');
-        console.log(row);
         var row_id = row.children().first()[0].textContent;
 
         idx = -1;
-        removeItemFromLocalStorage(row_id);
         row.remove();
 
         $('#itemContainer > tr').find('td:first').text(function (i) {
             return i + 1;
         })
-    });
 
-    $('#itemContainer').on('click', 'button.editItem', function () {
-        var row = $(this).parents('tr');
-        console.log(row.children().first()[0].textContent);
+        removeItemFromLocalStorage(row_id);
     });
 
     $('body').on('click', '[data-editable]', function () {
@@ -126,6 +121,10 @@ function setMoveButtons()
 
     $("#itemContainer tr:first .move-up button").css("visibility", "hidden");
     $("#itemContainer tr:last .move-down button").css("visibility", "hidden");
+
+    $("#itemContainer tr:only-child .move-up button").css("visibility", "hidden");
+    $("#itemContainer tr:only-child .move-down button").css("visibility", "hidden");
+
 }
 
 function updateSum()
@@ -228,7 +227,8 @@ function getDataFromLocalStorage() {
 
 function checkPriceInput(input) {
     if (!isNaN(input)) { //number
-        if (input > 0) {
+        var z1 = /^[+]?(?=.)(?:\d+,)*\d*(?:\.\d+)?$/;
+        if (z1.test(input)) {
             return true;
         }
     }
@@ -237,7 +237,8 @@ function checkPriceInput(input) {
 
 function checkQuantityInput(input) {
     if (!isNaN(input)) { //number
-        if (input > 0 && Number.isInteger(input)) {
+        var z1 = /^[+]?(?=.)(?:\d+,)*\d*(?:\.\d+)?$/;
+        if (z1.test(input) && Number.isInteger(input)) {
             return true
         }
     }
