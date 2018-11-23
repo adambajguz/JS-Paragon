@@ -49,10 +49,11 @@ window.onload = function () {
 
 
             var $span = $('<span data-editable />').text($input.val());
-            existingTableData[row_id-1][field_name] = $input.val();
+            existingTableData[row_id - 1][field_name] = $input.val();
 
             $input.replaceWith($span);
             localStorage.setItem(tableDataStorage, JSON.stringify(existingTableData));
+            updateSum();
         };
 
         /**
@@ -137,8 +138,20 @@ function updateSum()
     else
     {
         var sum = 0;
-        existingTableData.forEach(item => sum += item.quantity * item.price)
-        console.log(sum);
+        // existingTableData.forEach(item => sum += item.quantity * item.price)
+
+        $('#itemContainer > tr > .total').text(function () {
+          
+            var row = $(this).parents('tr');
+            var row_id = row.children().first()[0].textContent;
+            var data_row = existingTableData[row_id - 1];
+
+            var sub_sum = data_row.quantity * data_row.price;
+            sum += sub_sum;
+
+            return sub_sum;
+        });
+
         $totalField.text(sum);
     }
 }
@@ -199,7 +212,6 @@ function loadLocalStorageToTable() {
     setMoveButtons();
     updateSum();
 }
-
 
 function getDataFromLocalStorage() {
     var existingTableStorage = localStorage.getItem(tableDataStorage);
