@@ -5,8 +5,14 @@ const invalidNumberString = "Błędna wartość!";
 const tableDataStorage = "tableData";
 
 window.onload = function () {
+    let d = new Date();
+    let datestring = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear().toString().substring(2);
+
+    $('#header_date').text(datestring);
+    $('#header_id').text(getIdFromLocalStorage());
+
     loadLocalStorageToTable();
-    
+
     let storage = getDataFromLocalStorage();
     idx = storage == null ? 0 : storage.length;
 
@@ -45,7 +51,7 @@ window.onload = function () {
         var $el = $(this);
 
         var field_name = $el.parents('td').attr('class');
-        
+
         var row = $el.parents('tr');
         var row_id = row.children().first()[0].textContent;
 
@@ -131,8 +137,7 @@ window.onload = function () {
     })
 }
 
-function setMoveButtons()
-{
+function setMoveButtons() {
     $("#itemContainer tr .move-up button").css("visibility", "visible");
     $("#itemContainer tr .move-down button").css("visibility", "visible");
 
@@ -144,8 +149,7 @@ function setMoveButtons()
 
 }
 
-function updateTableId()
-{
+function updateTableId() {
     idx = -1;
 
     $('#itemContainer > tr').find('td:first').text(function (i) {
@@ -153,20 +157,18 @@ function updateTableId()
     })
 }
 
-function updateTableSum()
-{
+function updateTableSum() {
     var existingTableData = getDataFromLocalStorage();
     var $totalField = $(".totalValue p span");
 
     if (existingTableData == null)
         $totalField.val("0");
-    else
-    {
+    else {
         var sum = 0;
         // existingTableData.forEach(item => sum += item.quantity * item.price)
 
         $('#itemContainer > tr > .total').text(function () {
-          
+
             var row = $(this).parents('tr');
             var row_id = row.children().first()[0].textContent;
             var data_row = existingTableData[row_id - 1];
@@ -187,11 +189,10 @@ function addItemToLocalStorage(id, name, quantity, price) {
     if (existingTableData == null)
         existingTableData = [];
 
-    existingTableData.push({ id: id, name: name, quantity: quantity, price: price });
+    existingTableData.push({ id: id, name: name, quantity: quantity, price: price }); 
     localStorage.setItem(tableDataStorage, JSON.stringify(existingTableData));
 
     updateTableSum();
-
 }
 
 function removeItemFromLocalStorage(id) {
@@ -250,6 +251,26 @@ function getDataFromLocalStorage() {
 
     return existingTableData;
 }
+
+function pad(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+
+function getIdFromLocalStorage() {
+    var id = localStorage.getItem("id");
+
+    if (id == null || (typeof (id) == "undefined") || id == "undefined") {
+        localStorage.setItem("id", 0);
+        return "000";
+    }
+
+    localStorage.setItem("id", parseInt(id)+1);
+    return pad(parseInt(id) % 1000, 3);
+}
+
+
 
 function checkPriceInput(input) {
     if (!isNaN(input)) { //number
