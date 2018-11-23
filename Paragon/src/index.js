@@ -1,10 +1,29 @@
 var idx = 0;
+
 const emptyStringError = "Pole nie może być puste!";
 const invalidNumberString = "Błędna wartość!";
 const tableDataStorage = "tableData";
 
 window.onload = function () {
     loadLocalStorageToTable();
+    let storage = getDataFromLocalStorage();
+    idx = storage == null ? 0 : storage.length;
+
+    $('#itemContainer').on('click', 'button.deleteItem', function() {
+        var row = $(this).parents('tr')
+        console.log(row);
+        var row_id = row.children().first()[0].textContent;
+
+        idx = -1;
+        removeItemFromLocalStorage(row_id);
+        row.remove();
+
+
+        $('#itemContainer > tr').find('td:first').text(function(i, text){
+            return i + 1;
+        })
+    
+    });
 
     $("#addForm").submit(function () {
         $("#name_error").text("");
@@ -45,6 +64,7 @@ window.onload = function () {
         if (error == true)
             return false;
 
+        ++idx;
         addItemToTable(idx, name, quantity, price);
         addItemToLocalStorage(idx, name, quantity, price)
  
@@ -58,18 +78,32 @@ window.onload = function () {
 }
 
 function addItemToLocalStorage(id, name, quantity, price) {
-    var existingTableData = JSON.parse(localStorage.getItem(tableDataStorage));
-    if (existingTableData == null)
+    var existingTableData = getDataFromLocalStorage();
+
+    if(existingTableData == null)
         existingTableData = [];
 
-    existingTableData.push({ id: idx, name: name, quantity: quantity, price: price });
+    existingTableData.push({ id: id, name: name, quantity: quantity, price: price });
+    localStorage.setItem(tableDataStorage, JSON.stringify(existingTableData));
+}
+
+function removeItemFromLocalStorage(id) {
+    var existingTableData = getDataFromLocalStorage();
+    if(existingTableData == null)
+        return;
+
+    idx = 0;
+
+    existingTableData = existingTableData.filter(item => item.id != id)
+    existingTableData.forEach(item => item.id = ++idx)
+
     localStorage.setItem(tableDataStorage, JSON.stringify(existingTableData));
 }
 
 function addItemToTable(id, name, quantity, price) {
     var newElement = $("#itemPattern").clone();
 
-    newElement.find(".id").text(++idx);
+    newElement.find(".id").text(id);
     newElement.find(".name").text(name);
     newElement.find(".quantity").text(quantity);
     newElement.find(".price").text(price);
@@ -83,14 +117,26 @@ function addItemToTable(id, name, quantity, price) {
 
 function loadLocalStorageToTable()
 {
-    var existingTableData = JSON.parse(localStorage.getItem(tableDataStorage));
-    console.log(existingTableData)
+    var existingTableData = getDataFromLocalStorage();
+    if(existingTableData == null)
+        return;
 
-    for(item of existingTableData)
-    {
-        addItemToTable(item.id, item.name, item.quantity, item.price);
+    existingTableData.forEach(item => addItemToTable(item.id, item.name, item.quantity, item.price));
+}
 
-    }
+
+function getDataFromLocalStorage()
+{
+    var existingTableStorage = localStorage.getItem(tableDataStorage);
+
+    if(existingTableStorage == null || (typeof(existingTableStorage) == "undefined") || existingTableStorage == "undefined")
+        return null;
+
+    var existingTableData = JSON.parse(existingTableStorage);
+    if(existingTableData == null)
+        return null;
+
+    return existingTableData;
 }
 
 function checkPriceInput(input) {

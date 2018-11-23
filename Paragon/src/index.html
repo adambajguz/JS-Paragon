@@ -23,9 +23,7 @@
                     <th class="price">CENA</th>
                     <th class="total">SUMA</th>
                     <th>Operacje</th>
-                </tr>
-            </thead>
-            <tbody id="itemContainer">
+                </tr>  
                 <tr id="itemPattern" hidden>
                     <td class="id">0</td>
                     <td class="name"></td>
@@ -33,8 +31,8 @@
                     <td class="price"></td>
                     <td class="total"></td>
                     <td>
-                        <button>Edytuj</button>
-                        <button>Usuń</button>
+                        <button class="editItem" value="Edit">Edytuj</button>
+                        <button class="deleteItem" value="Delete">Usuń</button>
                     </td>
                     <td class="move-up no-padding">
                         <button>⇧</button>
@@ -43,6 +41,9 @@
                         <button>⇩</button>
                     </td>
                 </tr>
+            </thead>
+            <tbody id="itemContainer">
+              
             </tbody>
             <tfoot>
                 <tr id="total">
