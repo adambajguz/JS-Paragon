@@ -6,6 +6,7 @@ const tableDataStorage = "tableData";
 
 window.onload = function () {
     loadLocalStorageToTable();
+    
     let storage = getDataFromLocalStorage();
     idx = storage == null ? 0 : storage.length;
 
@@ -47,10 +48,10 @@ window.onload = function () {
                 return;
 
 
-            var $p = $('<p data-editable />').text($input.val());
+            var $span = $('<span data-editable />').text($input.val());
             existingTableData[row_id-1][field_name] = $input.val();
 
-            $input.replaceWith($p);
+            $input.replaceWith($span);
             localStorage.setItem(tableDataStorage, JSON.stringify(existingTableData));
         };
 
@@ -119,11 +120,27 @@ window.onload = function () {
 
 function setMoveButtons()
 {
-    //$("#itemContainer tr .move-up button").css("visibility", "visible");
+    $("#itemContainer tr .move-up button").css("visibility", "visible");
     $("#itemContainer tr .move-down button").css("visibility", "visible");
 
     $("#itemContainer tr:first .move-up button").css("visibility", "hidden");
     $("#itemContainer tr:last .move-down button").css("visibility", "hidden");
+}
+
+function updateSum()
+{
+    var existingTableData = getDataFromLocalStorage();
+    var $totalField = $(".totalValue p span");
+
+    if (existingTableData == null)
+        $totalField.val("0");
+    else
+    {
+        var sum = 0;
+        existingTableData.forEach(item => sum += item.quantity * item.price)
+        console.log(sum);
+        $totalField.text(sum);
+    }
 }
 
 function addItemToLocalStorage(id, name, quantity, price) {
@@ -134,6 +151,9 @@ function addItemToLocalStorage(id, name, quantity, price) {
 
     existingTableData.push({ id: id, name: name, quantity: quantity, price: price });
     localStorage.setItem(tableDataStorage, JSON.stringify(existingTableData));
+
+    updateSum();
+
 }
 
 function removeItemFromLocalStorage(id) {
@@ -147,18 +167,20 @@ function removeItemFromLocalStorage(id) {
     existingTableData.forEach(item => item.id = ++idx)
 
     localStorage.setItem(tableDataStorage, JSON.stringify(existingTableData));
+
+    updateSum();
 }
 
 function addItemToTable(id, name, quantity, price) {
     var newElement = $("#itemPattern").clone();
 
     newElement.find(".id").text(id);
-    newElement.find(".name > p").text(name);
-    newElement.find(".quantity > p").text(quantity);
-    newElement.find(".price > p").text(price);
+    newElement.find(".name p span").text(name);
+    newElement.find(".quantity p span").text(quantity);
+    newElement.find(".price p span").text(price);
 
     var total = parseFloat(quantity) * parseFloat(price);
-    newElement.find(".total").text(total);
+    newElement.find(".total p span").text(total);
     newElement.removeAttr("id");
 
     $("#itemContainer").append(newElement);
@@ -175,6 +197,7 @@ function loadLocalStorageToTable() {
     existingTableData.forEach(item => addItemToTable(item.id, item.name, item.quantity, item.price));
 
     setMoveButtons();
+    updateSum();
 }
 
 

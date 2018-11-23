@@ -39,7 +39,7 @@ main table {
     margin-bottom: 20px;
 }
 
-main table tr:nth-child(2n-1) td {
+main table tbody tr:nth-child(2n-1) td {
     background: #F5F5F5;
 }
 
@@ -61,12 +61,12 @@ main table .id {
 
 main table .name {
     text-align: left;
-    width: calc(60% - 120px - 28px);
+    width: calc(50% - 120px - 28px);
 }
 
 main table .quantity {
     text-align: right;
-    width: 10%;
+    width: 15%;
 }
 
 main table .price {
@@ -74,9 +74,9 @@ main table .price {
     width: 10%;
 }
 
-main table .total {
+main table tbody .total, main table tfoot .totalValue {
     text-align: right;
-    width: 10%;
+    width: 15%;
     padding-right: 28px;
 }
 
@@ -96,10 +96,10 @@ td p {
     margin: 0;
 }
 
-td input {
+main td input {
     padding: 0;
     margin: 0;
-    width: 100%;
+    width: calc(100% - 4ex);
 
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -112,10 +112,13 @@ main table .no-padding {
 
 main table tbody tr {
     border-top: 1px solid #b9b9b9;
+
 }
 
 main table tfoot tr {
     border-top: 1px solid #5D6975;
+    background: #C1CED9;
+    font-style: italic;
 }
 
 .error {
