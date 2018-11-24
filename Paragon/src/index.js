@@ -91,12 +91,12 @@ window.onload = function () {
 
         var error = false;
 
-        if (checkQuantityInput(parseInt(quantity)) == false) {
+        if (isInteger(quantity) == false) {
             $("#quantity_error").text(invalidNumberString);;
             error = true;
         }
 
-        if (checkPriceInput(parseFloat(price)) == false) {
+        if (isFloat(price) == false) {
             $("#price_error").text(invalidNumberString);
             error = true;
         }
@@ -319,25 +319,12 @@ function getIdFromLocalStorage() {
 }
 
 
-
-function checkPriceInput(input) {
-    if (!isNaN(input)) { //number
-        var z1 = /^[+]?(?=.)(?:\d+,)*\d*(?:\.\d+)?$/;
-        if (z1.test(input)) {
-            return true;
-        }
-    }
-    return false; //not a number
+function isFloat(value) {
+return !isNaN(value) && parseFloat(Number(value)) == value && !isNaN(parseFloat(value, 10))
 }
 
-function checkQuantityInput(input) {
-    if (!isNaN(input)) { //number
-        var z1 = /^[+]?(?=.)(?:\d+,)*\d*(?:\.\d+)?$/;
-        if (z1.test(input) && Number.isInteger(input)) {
-            return true
-        }
-    }
-    return false; //not a number
+function isInteger(value) {
+    return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10))
 }
 
 function getConfirmation() {
