@@ -6,9 +6,9 @@ const tableDataStorage = "tableData";
 
 window.onload = function () {
     let d = new Date();
-    let datestring = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear().toString().substring(2);
+    let dateString = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear().toString().substring(2);
 
-    $('#header_date').text(datestring);
+    $('#header_date').text(dateString);
     $('#header_id').text(getIdFromLocalStorage());
 
     loadLocalStorageToTable();
