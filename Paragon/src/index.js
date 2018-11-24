@@ -30,20 +30,14 @@ window.onload = function () {
         var row = $(this).parents('tr');
         var row_id = row.children().first()[0].textContent;
 
-        row.remove();
-
-        updateTableId();
-        removeItemFromLocalStorage(row_id);
+        moveRows(true, row_id, row);
     });
 
     $('#itemContainer').on('click', 'button.moveDown', function () {
         var row = $(this).parents('tr');
         var row_id = row.children().first()[0].textContent;
 
-        row.remove();
-
-        updateTableId();
-        removeItemFromLocalStorage(row_id);
+        moveRows(false, row_id, row);
     });
 
 
@@ -137,6 +131,59 @@ window.onload = function () {
     })
 }
 
+Array.prototype.swap = function (x,y) {
+    var b = this[x];
+    this[x] = this[y];
+    this[y] = b;
+    return this;
+  }
+
+
+function moveRows(up, row_id, row) {
+    var existingTableData = getDataFromLocalStorage();
+    if (existingTableData == null)
+        return;
+
+    swapRowsInDataStorage(existingTableData, row_id, up);
+    swapRowsInTable(existingTableData, row, row_id, up);
+
+    localStorage.setItem(tableDataStorage, JSON.stringify(existingTableData));
+}
+function swapRowsInDataStorage(existingTableData, row_id, prev) {
+    var currRowIndex = row_id - 1;
+    var toSwapRowIndex = prev == true ? row_id - 2 : row_id;
+
+    existingTableData.swap(currRowIndex, toSwapRowIndex);
+    existingTableData[currRowIndex].id = row_id;
+    existingTableData[toSwapRowIndex].id = row_id - 1;
+}
+
+function swapRowsInTable(existingTableData, row, row_id, prev) {
+    var toSwapTableRow = prev == true ? row.prev() : row.next();
+    var currTableRow = row;
+
+    var currRowIndex = row_id - 1;
+    var toSwapRowIndex = prev == true ? row_id - 2 : row_id;
+
+    toSwapTableRow.find('td.name p span').text(existingTableData[toSwapRowIndex].name);
+    currTableRow.find('td.name p span').text(existingTableData[currRowIndex].name);
+
+    var prevQuantity = existingTableData[toSwapRowIndex].quantity;
+    var currQuantity = existingTableData[currRowIndex].quantity;
+
+    toSwapTableRow.find('td.quantity p span').text(prevQuantity);
+    currTableRow.find('td.quantity p span').text(currQuantity);
+    
+    var prevPrice = existingTableData[toSwapRowIndex].price;
+    var currPrice = existingTableData[currRowIndex].price;
+
+    toSwapTableRow.find('td.price p span').text(prevPrice);
+    currTableRow.find('td.price p span').text(currPrice);
+
+    toSwapTableRow.find('td.total p span').text(prevQuantity * prevPrice);
+    currTableRow.find('td.total p span').text(currQuantity * currPrice);
+}
+
 function setMoveButtons() {
     $("#itemContainer tr .move-up button").css("visibility", "visible");
     $("#itemContainer tr .move-down button").css("visibility", "visible");
@@ -167,7 +214,7 @@ function updateTableSum() {
         var sum = 0;
         // existingTableData.forEach(item => sum += item.quantity * item.price)
 
-        $('#itemContainer > tr > .total').text(function () {
+        $('#itemContainer > tr > .total > p > span').text(function () {
 
             var row = $(this).parents('tr');
             var row_id = row.children().first()[0].textContent;
