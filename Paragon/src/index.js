@@ -24,6 +24,7 @@ window.onload = function () {
 
         updateTableId();
         removeItemFromLocalStorage(row_id);
+        setMoveButtons();
     });
 
     $('#itemContainer').on('click', 'button.moveUp', function () {
