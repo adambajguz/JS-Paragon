@@ -106,6 +106,14 @@ main td input {
     -webkit-box-sizing: border-box;
 }
 
+main td button {
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 0px 8px;
+    margin: 4px 0;
+}
+
 main table .no-padding {
     padding: 0;
 }
