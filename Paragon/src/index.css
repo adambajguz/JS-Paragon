@@ -91,6 +91,10 @@ main table td {
     font-size: 1.2em;
 }
 
+main table td p span[data-editable]:hover {
+    font-weight: bold;
+}
+
 td p {
     padding: 0;
     margin: 0;
