@@ -17,14 +17,16 @@ window.onload = function () {
     idx = storage == null ? 0 : storage.length;
 
     $('#itemContainer').on('click', 'button.deleteItem', function () {
-        var row = $(this).parents('tr');
-        var row_id = row.children().first()[0].textContent;
+        if(getConfirmation() == true) {
+            var row = $(this).parents('tr');
+            var row_id = row.children().first()[0].textContent;
 
-        row.remove();
+            row.remove();
 
-        updateTableId();
-        removeItemFromLocalStorage(row_id);
-        setMoveButtons();
+            updateTableId();
+            removeItemFromLocalStorage(row_id);
+            setMoveButtons();
+        }
     });
 
     $('#itemContainer').on('click', 'button.moveUp', function () {
@@ -59,8 +61,7 @@ window.onload = function () {
             var existingTableData = getDataFromLocalStorage();
             if (existingTableData == null)
                 return;
-
-
+                
             var $span = $('<span data-editable />').text($input.val());
             existingTableData[row_id - 1][field_name] = $input.val();
 
@@ -328,7 +329,7 @@ function isInteger(value) {
 }
 
 function getConfirmation() {
-    var retVal = confirm("Do you want to continue ?");
+    var retVal = confirm("Czy na pewno chcesz usunąć?");
     if (retVal == true) {
         return true;
     } else {
